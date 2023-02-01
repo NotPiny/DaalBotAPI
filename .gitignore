@@ -1,3 +1,10 @@
+# Data
 .env
 data/
+
+# Modules
+node_modules/
+package*.json
+
+# Tests
 *.test.*

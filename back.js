@@ -2,8 +2,7 @@ const path = require('path');
 const { Client, GatewayIntentBits } = require('discord.js');
 require('dotenv').config();
 const axios = require('axios');
-const DiscordOauth2 = require("discord-oauth2");
-const oauth = new DiscordOauth2();
+const crypto = require('crypto');
 const fs = require('fs');
 const https = require('https');
 const client = new Client({
@@ -40,6 +39,36 @@ app.get('/get/test/ping', (req, res) => {
 
 app.get('/get/general/serverAmount', (req, res) => {
     res.send(`${client.guilds.cache.size}`)
+})
+
+app.post('/post/users/create', (req, res) => {
+    const user = req.query.id;
+    const { password } = req.headers;
+
+    if (!user || !password) {
+        res.send('Missing parameters')
+    }
+
+    if (fs.existsSync(`./data/users/${user}.json`)) {
+        console.log('User already exists')
+        res.send({
+            error: 'User already exists',
+            code: 400
+        })
+    } else {
+        const userSecret = crypto.randomBytes(64).toString('hex');
+        const userSecretHash = crypto.createHash('sha256').update(userSecret).digest('hex');
+        const passwordHash = crypto.createHash('sha256').update(password).digest('hex');
+        fs.appendFileSync(`./data/users/${user}.json`, JSON.stringify({
+            password: passwordHash,
+            secret: userSecretHash
+        }));
+
+        res.send({
+            secret: userSecret,
+            code: 200
+        })
+    }
 })
 
 client.login(process.env.DJSTOKEN);
