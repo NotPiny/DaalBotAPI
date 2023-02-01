@@ -45,9 +45,6 @@ app.post('/post/users/create', (req, res) => {
     const user = req.query.id;
     const { password } = req.headers;
 
-    // Dear future me, please please please comment this out when you're done with it
-    // console.log(user, password)
-
     if (!user || !password) {
         res.send('Missing parameters')
     }
