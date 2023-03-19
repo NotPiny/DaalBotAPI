@@ -45,8 +45,8 @@ app.get('/get/users/secret', (req, res) => {
         })
     }
 
-    if (fs.existsSync(`../data/users/${id}.json`)) {
-        const fileText = fs.readFileSync(`../data/users/${id}.json`, 'utf8');
+    if (fs.existsSync(`./data/users/${id}.json`)) {
+        const fileText = fs.readFileSync(`./data/users/${id}.json`, 'utf8');
         const json = JSON.parse(fileText);
 
         const passwordHash = crypto.createHash('sha256').update(password).digest('hex');
@@ -60,7 +60,7 @@ app.get('/get/users/secret', (req, res) => {
                 secret: userSecretHash
             }
 
-            fs.writeFileSync(`../data/users/${id}.json`, JSON.stringify(newJson));
+            fs.writeFileSync(`./data/users/${id}.json`, JSON.stringify(newJson));
 
             res.send({
                 code: 200,
@@ -110,7 +110,7 @@ app.post('/post/users/create', (req, res) => {
         })
     }
 
-    if (fs.existsSync(`../data/users/${user}.json`)) {
+    if (fs.existsSync(`./data/users/${user}.json`)) {
         res.status(400)
         res.send({
             error: 'User already exists',
@@ -118,7 +118,7 @@ app.post('/post/users/create', (req, res) => {
         })
     } else {
         const passwordHash = crypto.createHash('sha256').update(password).digest('hex');
-        fs.appendFileSync(`../data/users/${user}.json`, JSON.stringify({
+        fs.appendFileSync(`./data/users/${user}.json`, JSON.stringify({
             password: passwordHash
         }));
 
@@ -148,8 +148,8 @@ app.post('/post/users/password/reset', (req, res) => {
         })
     }
 
-    if (fs.existsSync(`../data/users/${id}.json`)) {
-        const fileText = fs.readFileSync(`../data/users/${id}.json`, 'utf8');
+    if (fs.existsSync(`./data/users/${id}.json`)) {
+        const fileText = fs.readFileSync(`./data/users/${id}.json`, 'utf8');
         const json = JSON.parse(fileText);
 
         const secretHash = crypto.createHash('sha256').update(secret).digest('hex');
@@ -163,7 +163,7 @@ app.post('/post/users/password/reset', (req, res) => {
                 secret: json.secret
             }
 
-            fs.writeFileSync(`../data/users/${id}.json`, JSON.stringify(newJson));
+            fs.writeFileSync(`./data/users/${id}.json`, JSON.stringify(newJson));
 
             res.send({
                 code: 200,
@@ -208,9 +208,9 @@ app.get('/get/users/servers', (req, res) => {
         })
     }
 
-    if (fs.existsSync(`../data/users/${id}.json`)) {
+    if (fs.existsSync(`./data/users/${id}.json`)) {
         // User exists
-        const fileText = fs.readFileSync(`../data/users/${id}.json`, 'utf8');
+        const fileText = fs.readFileSync(`./data/users/${id}.json`, 'utf8');
         const json = JSON.parse(fileText);
 
         const userSecretHash = crypto.createHash('sha256').update(secret).digest('hex');
@@ -285,8 +285,8 @@ app.post('/guilds/channels/messages', (req, res) => {
         })
     }
 
-    if (fs.existsSync(`../data/users/${user}.json`)) {
-        const fileText = fs.readFileSync(`../data/users/${user}.json`, 'utf8');
+    if (fs.existsSync(`./data/users/${user}.json`)) {
+        const fileText = fs.readFileSync(`./data/users/${user}.json`, 'utf8');
         const json = JSON.parse(fileText);
         const correctSecret = json.secret;
 
