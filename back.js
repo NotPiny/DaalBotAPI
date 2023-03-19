@@ -1,19 +1,11 @@
 const path = require('path');
-const { Client, GatewayIntentBits } = require('discord.js');
 const DJS = require('discord.js');
 require('dotenv').config();
 const axios = require('axios');
 const crypto = require('crypto');
 const fs = require('fs');
 const https = require('https');
-const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.GuildMessageReactions,
-        GatewayIntentBits.GuildPresences,
-    ]
-});
+const client = require('./client.js');
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -248,6 +240,28 @@ app.get('/get/users/servers', (req, res) => {
             })
         }
     }
+})
+
+app.post('/post/api/update', (req, res) => {
+    const auth = req.query.auth;
+
+    if (auth === undefined) {
+        res.status(400)
+        return res.send({
+            code: 400,
+            error: 'Missing auth'
+        })
+    }
+
+    if (auth !== process.env.ActionCommunicationKey) {
+        res.status(401)
+        return res.send({
+            code: 401,
+            error: 'Invalid auth'
+        })
+    }
+
+    require('child_process').execSync('sh update.sh');
 })
 
 app.post('/guilds/channels/messages', (req, res) => {
