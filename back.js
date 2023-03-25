@@ -269,13 +269,8 @@ app.post('/guilds/channels/messages', (req, res) => {
     const { user } = req.headers;
     const secret = crypto.createHash('sha256').update(req.headers.secret).digest('hex');
 
-    const message = JSON.parse(req.body)
-        .then(() => {
-            console.log('Message was received correctly')
-        })
-        .catch(err => {
-            console.log(err)
-        })
+    const message = req.headers.message;
+    const embeds = req.headers.embeds;
     
     if (!guild || !channel || !user || !secret || !message) {
         res.status(400)
@@ -295,7 +290,10 @@ app.post('/guilds/channels/messages', (req, res) => {
             if (guildObject) {
                 const channelObject = guildObject.channels.cache.get(channel);
                 if (channelObject) {
-                    channelObject.send(message)
+                    channelObject.send({
+                        content: message,
+                        embeds: embeds == undefined ? [] : embeds
+                    })
                         .then(() => {
                             return res.send({
                                 code: 200,
