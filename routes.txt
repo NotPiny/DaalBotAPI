@@ -1,9 +1,0 @@
-> Other
-/
-----------
-> Test
->> Get
-/get/test/ping
-----------
-> Get
-/get/general/serverAmount
