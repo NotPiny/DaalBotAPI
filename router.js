@@ -5,6 +5,7 @@ require('dotenv').config();
 const port = process.env.PORT || 3000;
 const fs = require('fs');
 const https = require('https');
+const client = require('./client.js');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
