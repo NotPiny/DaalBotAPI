@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+require('dotenv').config();
 const port = process.env.PORT || 3000;
 const fs = require('fs');
+const https = require('https');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -37,6 +39,11 @@ app.post('/post/:category/:item', (req, res) => {
   }
 });
 
-app.listen(port, () => {
+https.createServer({
+  key: fs.readFileSync('/etc/letsencrypt/live/api.daalbot.xyz/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/api.daalbot.xyz/fullchain.pem')
+}, app).listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
+
+client.login(process.env.TOKEN);
