@@ -6,6 +6,10 @@ const fs = require('fs');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
 app.get('/get/:category/:item', (req, res) => {
   console.log(`GET ${req.params.category}/${req.params.item} (${req.headers['user-agent']})`);
   let category = req.params.category;

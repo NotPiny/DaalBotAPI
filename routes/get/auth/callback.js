@@ -71,29 +71,21 @@ module.exports = (req, res) => {
                 const loopBackCode = crypto.randomBytes(64).toString('hex');
                 const userID = userInfo.id;
 
-                // Encrypt the code and save it to a file
-                const key = crypto.randomBytes(32);
-                const iv = crypto.randomBytes(16);
-                const cipher = createCipheriv('aes-256', key, iv);
+                const hashedCode = crypto.createHash('sha256').update(loopBackCode).digest('hex');
 
-                const encryptedCode = cipher.update(loopBackCode, 'utf-8', 'hex')
-                    + cipher.final('hex');
+                fs.appendFileSync(path.resolve(`./auth/${userID}.code`), hashedCode);
+                fs.appendFileSync(path.resolve(`./auth/${userID}.data`), JSON.stringify(userInfo, null, 4));
 
-                fs.appendFileSync(path.resolve(`./auth/${userID}.code`), encryptedCode);
-
-                const buffer = Buffer.from(`${key.toString('hex')}:${iv.toString('hex')}:${loopBackCode}`);
+                // const buffer = Buffer.from(`${key.toString('hex')}:${iv.toString('hex')}:${loopBackCode}`);
+                const buffer = Buffer.from(loopBackCode)
 
                 const authBase64 = buffer.toString('base64');
 
-                res.redirect(302, 'https://daalbot.xyz/transfer/api/callback', {
-                    headers: {
-                        'X-Daalbot-Auth': authBase64
-                    }
-                });
+                res.send(`<script>window.location.href = 'https://daalbot.xyz/transfer/api/callback?auth=${authBase64}&id=${userID}'</script>`);
             })
             .catch((error) => {
                 console.error(error);
-                res.status(500).send(error);
+                res.send('An error occurred while trying to authenticate you.')
             })
     } else {
         res.redirect(`https://api.daalbot.xyz/get/users/login`)
