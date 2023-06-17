@@ -10,3 +10,6 @@ package*.json
 *.test.*
 
 temp/
+
+# auth
+/auth

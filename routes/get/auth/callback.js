@@ -18,7 +18,7 @@ module.exports = (req, res) => {
         const API_ENDPOINT = 'https://discord.com/api/v10';
         const CLIENT_ID = process.env.CLIENT_ID;
         const CLIENT_SECRET = process.env.CLIENT_SECRET;
-        const REDIRECT_URI = 'https://396e-2a09-bac5-3784-ed2-00-17a-44.ngrok-free.app/get/auth/callback';
+        const REDIRECT_URI = 'https://api.daalbot.xyz/get/auth/callback';
 
         // Exchange the authorization code for an access token
         const data = {
@@ -85,9 +85,11 @@ module.exports = (req, res) => {
 
                 const authBase64 = buffer.toString('base64');
 
-                res.set('X-DaalBot-Auth', authBase64);
-
-                res.redirect(302, 'https://daalbot.xyz/transfer/api/callback');
+                res.redirect(302, 'https://daalbot.xyz/transfer/api/callback', {
+                    headers: {
+                        'X-Daalbot-Auth': authBase64
+                    }
+                });
             })
             .catch((error) => {
                 console.error(error);
