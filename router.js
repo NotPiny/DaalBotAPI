@@ -1,13 +1,13 @@
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');
+const cors = require('cors');
 require('dotenv').config();
 const port = process.env.PORT || 3000;
 const fs = require('fs');
 const https = require('https');
 const client = require('./client.js');
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
