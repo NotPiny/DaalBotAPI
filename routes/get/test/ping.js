@@ -1,4 +1,4 @@
 module.exports = (req, res) => {
-    res.status(200).send('pong');
+    res.status(418).send('pong');
 };
   
