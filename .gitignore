@@ -11,5 +11,11 @@ package*.json
 
 temp/
 
-# auth
+# Auth
 /auth
+
+# Errors
+error.log
+
+# Logs
+requests.log
