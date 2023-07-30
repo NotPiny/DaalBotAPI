@@ -40,7 +40,7 @@ app.get('/dashboard/:category/:action', async(req, res) => {
             const action = req.params.action;
     
             try {
-                const route = require(`./routes/dashboard/post/${category}/${action}.js`);
+                const route = require(`./routes/dashboard/get/${category}/${action}.js`);
                 route(req, res);
             } catch (error) {
                 console.error(error);
