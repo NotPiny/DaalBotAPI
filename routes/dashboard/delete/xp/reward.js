@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
     const guild = req.query.guild;
     const level = req.query.level;
 
-    const ReqURL = `https://bot.daalbot.xyz/get/database/delete`;
+    const ReqURL = `https://bot.daalbot.xyz/delete/database/remove`;
     const ReqOptions = {
         headers: {
             'Authorization': process.env.BotCommunicationKey,
