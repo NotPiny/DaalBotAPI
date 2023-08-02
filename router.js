@@ -98,6 +98,45 @@ app.post('/dashboard/:category/:action', async(req, res) => {
     }
 })
 
+app.delete('/dashboard/:category/:action', async(req, res) => {
+    const authorization = req.headers.authorization;
+
+    try {
+        const guildsReq = await axios.get(`https://discord.com/api/users/@me/guilds`, {
+            headers: {
+                Authorization: `Bearer ${authorization}`
+            }
+        })
+    
+        const guilds = guildsReq.data;
+
+        const manageableGuilds = guilds.filter(guild => guild.permissions & 0x20);
+    
+        if (manageableGuilds.filter(guild => guild.id == req.query.guild) != []) {
+            // User has permission to manage this guild
+            const category = req.params.category;
+            const action = req.params.action;
+    
+            try {
+                const route = require(`./routes/dashboard/delete/${category}/${action}.js`);
+                route(req, res);
+            } catch (error) {
+                console.error(error);
+                res.status(500).send('Internal Server Error');
+            }
+        } else {
+            res.status(401).send('Unauthorized');
+        }
+    } catch (error) {
+        if (`${error}`.includes('401')) {
+            res.status(401).send('Unauthorized');
+        } else {
+            console.error(error);
+            res.status(500).send('Internal Server Error');
+        }
+    }
+})
+
 app.get('/get/:category/:item', (req, res) => {
     console.log(`GET ${req.params.category}/${req.params.item} (${req.headers['user-agent']})`);
     let category = req.params.category;
