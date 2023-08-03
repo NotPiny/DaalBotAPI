@@ -164,11 +164,20 @@ app.post('/post/:category/:item', (req, res) => {
     }
 });
 
-https.createServer({
-   key: fs.readFileSync('/etc/letsencrypt/live/api.daalbot.xyz/privkey.pem'),
-   cert: fs.readFileSync('/etc/letsencrypt/live/api.daalbot.xyz/fullchain.pem')
-}, app).listen(port, () => {
-    console.log(`Server listening on port ${port}`);
-});
+if (process.env.HTTP == 'true') {
+    https.createServer({
+        // key: fs.readFileSync('/etc/letsencrypt/live/api.daalbot.xyz/privkey.pem'),
+        // cert: fs.readFileSync('/etc/letsencrypt/live/api.daalbot.xyz/fullchain.pem')
+     }, app).listen(port, () => {
+         console.log(`Server listening on port ${port}`);
+     });
+} else {
+    https.createServer({
+        key: fs.readFileSync('/etc/letsencrypt/live/api.daalbot.xyz/privkey.pem'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/api.daalbot.xyz/fullchain.pem')
+     }, app).listen(port, () => {
+         console.log(`Server listening on port ${port}`);
+     });
+}
 
 client.login(process.env.TOKEN);
