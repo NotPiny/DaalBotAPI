@@ -10,7 +10,7 @@ require('dotenv').config();
 module.exports = (req, res) => {
     if (req.query.auth !== process.env.ActionCommunicationKey) return res.status(401).send('Unauthorized');
 
-    execSync('sh restart.sh');
+    res.status(200).send('OK'); // Send OK before restarting to prevent curl from throwing a empty response error
 
-    res.status(200).send('OK');
+    execSync('pm2 restart 0');
 }
