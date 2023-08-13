@@ -1,6 +1,5 @@
 # Data
 .env
-data/
 
 # Modules
 node_modules/
@@ -14,8 +13,5 @@ temp/
 # Auth
 /auth
 
-# Errors
-error.log
-
 # Logs
-requests.log
+*.log
