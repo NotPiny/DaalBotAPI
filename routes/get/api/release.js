@@ -7,5 +7,5 @@ const express = require('express');
 */
 
 module.exports = (req, res) => {
-    return fs.readFileSync('./Release.id', 'utf8')
+    res.send(fs.readFileSync('./Release.id', 'utf8'))
 }
