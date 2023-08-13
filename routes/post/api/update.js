@@ -8,7 +8,7 @@ require('dotenv').config();
 */
 
 module.exports = (req, res) => {
-    if (req.query.authorization !== process.env.ActionCommunicationKey) return res.status(401).send('Unauthorized');
+    if (req.query.auth !== process.env.ActionCommunicationKey) return res.status(401).send('Unauthorized');
 
     execSync('sh update.sh');
 
