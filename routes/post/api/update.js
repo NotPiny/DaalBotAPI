@@ -1,6 +1,8 @@
 const express = require('express');
 const execSync = require('child_process').execSync;
 require('dotenv').config();
+const fs = require('fs');
+const crypto = require('crypto');
 
 /**
  * @param {express.Request} req
@@ -13,4 +15,6 @@ module.exports = (req, res) => {
     execSync('sh update.sh');
 
     res.status(200).send('OK');
+
+    fs.writeFileSync('./Release.id', crypto.randomBytes(8).toString('hex')); // Generate a new Release ID
 }
