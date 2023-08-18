@@ -34,7 +34,7 @@ app.get('/dashboard/:category/:action', async(req, res) => {
 
         const manageableGuilds = guilds.filter(guild => guild.permissions & 0x20);
     
-        if (manageableGuilds.filter(guild => guild.id == req.query.guild) != []) {
+        if (manageableGuilds.filter(guild => guild.id == req.query.guild).length != 0) {
             // User has permission to manage this guild
             const category = req.params.category;
             const action = req.params.action;
@@ -73,7 +73,7 @@ app.post('/dashboard/:category/:action', async(req, res) => {
 
         const manageableGuilds = guilds.filter(guild => guild.permissions & 0x20);
     
-        if (manageableGuilds.filter(guild => guild.id == req.query.guild) != []) {
+        if (manageableGuilds.filter(guild => guild.id == req.query.guild).length != 0) {
             // User has permission to manage this guild
             const category = req.params.category;
             const action = req.params.action;
@@ -112,7 +112,7 @@ app.delete('/dashboard/:category/:action', async(req, res) => {
 
         const manageableGuilds = guilds.filter(guild => guild.permissions & 0x20);
     
-        if (manageableGuilds.filter(guild => guild.id == req.query.guild) != []) {
+        if (manageableGuilds.filter(guild => guild.id == req.query.guild).length != 0) {
             // User has permission to manage this guild
             const category = req.params.category;
             const action = req.params.action;
