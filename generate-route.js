@@ -51,7 +51,7 @@ module.exports = (req, res) => {
     console.log('Route generated!');
     console.log('Generating cURL command...');
 
-    const curl = `curl -X ${verb.toUpperCase()} http://localhost:3000/${dashboardRoute === 'Y' ? 'dashboard/' : 'get/'}${category}/${route}`;
+    const curl = `curl -X ${verb.toUpperCase()} http://localhost:3000/${dashboardRoute === 'Y' ? 'dashboard/' : 'get/'}${category}/${route}?guild=1017715574639431680`;
 
     console.log(curl);
 
