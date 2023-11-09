@@ -1,5 +1,6 @@
 # Data
 .env
+/data/
 
 # Modules
 node_modules/
