@@ -12,7 +12,7 @@ module.exports = (req, res) => {
 
     const analyticsData = JSON.parse(fs.readFileSync(path.resolve(`./data/analytics.json`)));
 
-    if (analyticsData[guild]) return res.status(400).send({ enabled: true });
+    if (analyticsData[guild] && analyticsData[guild].enabled) return res.send({ enabled: true });
 
     res.json({ enabled: false });
 }

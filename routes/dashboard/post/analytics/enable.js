@@ -13,8 +13,16 @@ module.exports = (req, res) => {
 
     const analyticsData = JSON.parse(fs.readFileSync(path.resolve(`./data/analytics.json`)));
 
-    if (analyticsData[guild]) return res.status(400).send({ error: 'Analytics already exists for this guild' });
+    if (analyticsData[guild] && analyticsData[guild].enabled) return res.status(400).send({ error: 'Analytics already enabled for this guild' });
 
+    // If the analytics already exists but is disabled, enable it
+    if (analyticsData[guild] && !analyticsData[guild].enabled) {
+        analyticsData[guild].enabled = true;
+        fs.writeFileSync(path.resolve(`./data/analytics.json`), JSON.stringify(analyticsData, null, 4));
+        return res.json({ success: true });
+    }
+
+    // If the analytics doesn't exist, create it
     setTimeout(() => { // Rate limits are rate limits...
         const guildData = client.guilds.cache.get(guild);
 
@@ -23,7 +31,9 @@ module.exports = (req, res) => {
         const guildChannels = guildData.channels.cache.filter(c => c.type === ChannelType.GuildText);
         const guildChannelIDs = guildChannels.map(c => c.id);
 
-        analyticsData[guild] = {}
+        analyticsData[guild] = {
+            enabled: true
+        }
 
         guildChannelIDs.forEach(channelID => {
             analyticsData[guild][channelID] = [] // Empty array for each channel to store analytics
