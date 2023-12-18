@@ -31,7 +31,7 @@ if (process.env.HTTP == 'true') {
 app.use(cors());
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.redirect('https://github.com/NotPiny/DaalBotAPI');
 });
 
 app.get('/dashboard/:category/:action', async(req, res) => {
