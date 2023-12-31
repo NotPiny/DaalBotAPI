@@ -15,7 +15,7 @@ const axios = require('axios');
  * @property {string} guilds.id - The ID of the guild.
  * @property {number} guilds.permissions - The permissions the user has for the guild.
  * @property {number} cachedTimestamp - The timestamp of when the user was cached. Used for cache invalidation.
- */
+*/
 
 /**
  * @type {CachedDashUser[]}
@@ -39,7 +39,7 @@ app.get('/dashboard/:category/:action', async(req, res) => {
 
     // Check if user is cached
     const cachedUser = dashboardUsers.find(user => user.accesscode === authorization);
-    if (cachedUser && Date.now() - cachedUser.cachedTimestamp <= 300000) {
+    if (cachedUser && Date.now() - cachedUser.cachedTimestamp <= 900000) { // 15 minutes
         // Use cached user data
         const guilds = cachedUser.guilds;
         const manageableGuilds = guilds.filter(guild => guild.permissions & 0x20);
@@ -103,7 +103,7 @@ app.get('/dashboard/:category/:action', async(req, res) => {
         }
 
         // Remove expired cache data
-        dashboardUsers = dashboardUsers.filter(user => Date.now() - user.cachedTimestamp <= 300000);
+        dashboardUsers = dashboardUsers.filter(user => Date.now() - user.cachedTimestamp <= 900000);
     }
 });
 
@@ -112,7 +112,7 @@ app.post('/dashboard/:category/:action', async(req, res) => {
 
     // Check if user is cached
     const cachedUser = dashboardUsers.find(user => user.accesscode === authorization);
-    if (cachedUser && Date.now() - cachedUser.cachedTimestamp <= 300000) {
+    if (cachedUser && Date.now() - cachedUser.cachedTimestamp <= 900000) {
         // Use cached user data
         const guilds = cachedUser.guilds;
         const manageableGuilds = guilds.filter(guild => guild.permissions & 0x20);
@@ -176,7 +176,7 @@ app.post('/dashboard/:category/:action', async(req, res) => {
         }
 
         // Remove expired cache data
-        dashboardUsers = dashboardUsers.filter(user => Date.now() - user.cachedTimestamp <= 300000);
+        dashboardUsers = dashboardUsers.filter(user => Date.now() - user.cachedTimestamp <= 900000);
     }
 });
 
@@ -185,7 +185,7 @@ app.delete('/dashboard/:category/:action', async(req, res) => {
 
     // Check if user is cached
     const cachedUser = dashboardUsers.find(user => user.accesscode === authorization);
-    if (cachedUser && Date.now() - cachedUser.cachedTimestamp <= 300000) {
+    if (cachedUser && Date.now() - cachedUser.cachedTimestamp <= 900000) {
         // Use cached user data
         const guilds = cachedUser.guilds;
         const manageableGuilds = guilds.filter(guild => guild.permissions & 0x20);
@@ -249,7 +249,7 @@ app.delete('/dashboard/:category/:action', async(req, res) => {
         }
 
         // Remove expired cache data
-        dashboardUsers = dashboardUsers.filter(user => Date.now() - user.cachedTimestamp <= 300000);
+        dashboardUsers = dashboardUsers.filter(user => Date.now() - user.cachedTimestamp <= 900000);
     }
 });
 
